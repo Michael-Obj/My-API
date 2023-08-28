@@ -7,5 +7,6 @@ urlpatterns = [
    path("staff/<str:staffId>/", views.GetById),
    path("stafflevel/<str:levelId>/", views.GetByStaffId),
    path("staff/edit/<str:id>/", views.UpdateStaff),
-   path("staff/delete/<str:id>/", views.DeleteStaff)
+   path("staff/delete/<str:id>/", views.DeleteStaff),
+   path("user/create", views.CreateUser),
 ]

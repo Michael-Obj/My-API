@@ -3,8 +3,11 @@ from rest_framework.decorators import api_view
 from bosstwo.models import StaffTwo
 from django.http import JsonResponse
 from rest_framework.response import Response
+from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 
-from bosstwo.serializers import StaffSerializer
+from bosstwo.serializers import StaffSerializer, UserSerializer
+from emailsend import OTGGenerator
 
 # Create your views here.
 
@@ -92,8 +95,25 @@ def UpdateStaff(request, id):
 def DeleteStaff(request, id):
     try:
         delete_staff = StaffTwo.objects.get(pk = id).delete()
+        OTGGenerator(["chrislogo19@gmail.com"], "SOMEONE DELETED A DATA!!!", """Just recently, A data got deleted from your database""")
         return Response({"message": "staff recorded deleted"})
     except Exception as ex:
         print(ex)
         return Response({"message": ex})
+    
 
+@api_view(["POST"])
+def CreateUser(request):
+    try:
+        contents = request.data
+        username = contents["username"]
+        password = contents["password"]
+        email = contents["email"]
+        user = User.objects.create_user(username=username, password=password, email=email)
+        user.save()
+        serialized_value = UserSerializer(user, many=False)
+        return Response(serialized_value.data)
+
+    except Exception as ex:
+        print(ex)
+        return Response({"message": ex})
