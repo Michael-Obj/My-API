@@ -8,3 +8,4 @@ class StaffTwo(models.Model):
     qualification = models.CharField(max_length=60)
     level = models.IntegerField()
     dateadded = models.DateTimeField(auto_now_add=True)
+
